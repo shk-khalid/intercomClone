@@ -70,3 +70,5 @@ const Copilot: React.FC<CopilotProps> = ({ onClose }) => {
     </div>
   );
 }
+
+export default Copilot

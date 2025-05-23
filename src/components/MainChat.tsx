@@ -78,3 +78,5 @@ const MainChat: React.FC<MainChatProps> = ({ activeChat, toggleCopilot }) => {
     </div>
   );
 }
+
+export default MainChat
