@@ -8,19 +8,36 @@ import './customStyles.css';
 function App() {
   const [activeChatId, setActiveChatId] = useState(chatHeads[0].id);
   const [isCopilotOpen, setIsCopilotOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const activeChat = chatHeads.find(chat => chat.id === activeChatId);
 
   const toggleCopilot = () => setIsCopilotOpen(prev => !prev);
+  const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
 
   return (
     <div className="flex h-screen bg-white">
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div className="w-64 border-r border-gray-200 flex-shrink-0">
+      <div className={`
+        fixed md:relative w-64 h-full bg-white border-r border-gray-200 z-30
+        transform transition-transform duration-200 ease-in-out
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+      `}>
         <Sidebar 
           chatHeads={chatHeads}
           activeChatId={activeChatId}
-          setActiveChatId={setActiveChatId}
+          setActiveChatId={(id) => {
+            setActiveChatId(id);
+            setIsSidebarOpen(false);
+          }}
         />
       </div>
 
@@ -29,14 +46,18 @@ function App() {
         <MainChat 
           activeChat={activeChat!}
           toggleCopilot={toggleCopilot}
+          toggleSidebar={toggleSidebar}
         />
 
         {/* Copilot Panel */}
-        {isCopilotOpen && (
-          <div className="w-80 border-l border-gray-200">
-            <Copilot onClose={toggleCopilot} />
-          </div>
-        )}
+        <div className={`
+          fixed md:relative w-80 h-full bg-white border-l border-gray-200 z-30
+          transform transition-transform duration-200 ease-in-out
+          ${isCopilotOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}
+          right-0
+        `}>
+          <Copilot onClose={toggleCopilot} />
+        </div>
       </div>
     </div>
   );

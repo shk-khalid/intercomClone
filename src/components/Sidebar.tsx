@@ -18,13 +18,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="p-4 border-b border-gray-200">
-        <h1 className="text-lg font-medium mb-4">Your inbox</h1>
-        <div className="flex space-x-2 mb-4">
-          <select className="px-3 py-1 text-sm border border-gray-200 rounded-md bg-white">
+      <div className="p-3 sm:p-4 border-b border-gray-200">
+        <h1 className="text-lg font-medium mb-3 sm:mb-4">Your inbox</h1>
+        <div className="flex space-x-2 mb-3 sm:mb-4">
+          <select className="px-2 sm:px-3 py-1 text-xs sm:text-sm border border-gray-200 rounded-md bg-white">
             <option>5 Open</option>
           </select>
-          <select className="px-3 py-1 text-sm border border-gray-200 rounded-md bg-white">
+          <select className="px-2 sm:px-3 py-1 text-xs sm:text-sm border border-gray-200 rounded-md bg-white">
             <option>Waiting longest</option>
           </select>
         </div>
@@ -33,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <input
             type="text"
             placeholder="Search conversations..."
-            className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-md"
+            className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-gray-50 border border-gray-200 rounded-md"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -46,7 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <button
             key={chat.id}
             onClick={() => setActiveChatId(chat.id)}
-            className={`w-full flex items-center p-4 hover:bg-gray-50 ${
+            className={`w-full flex items-center p-3 sm:p-4 hover:bg-gray-50 ${
               chat.id === activeChatId ? 'bg-gray-50' : ''
             }`}
           >
@@ -57,10 +57,10 @@ const Sidebar: React.FC<SidebarProps> = ({
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
-                <p className="text-sm font-medium truncate">{chat.name}</p>
+                <p className="text-xs sm:text-sm font-medium truncate">{chat.name}</p>
                 <span className="text-xs text-gray-500">44m</span>
               </div>
-              <p className="text-sm text-gray-500 truncate">{chat.lastMessage}</p>
+              <p className="text-xs sm:text-sm text-gray-500 truncate">{chat.lastMessage}</p>
             </div>
           </button>
         ))}
@@ -69,4 +69,4 @@ const Sidebar: React.FC<SidebarProps> = ({
   );
 }
 
-export default Sidebar
+export default Sidebar;

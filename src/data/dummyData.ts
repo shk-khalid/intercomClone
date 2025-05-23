@@ -1,85 +1,75 @@
-import { AdminUser, Message, ChatHead } from '../types';
+import { ChatHead, AdminUser } from '../types';
 
 export const chatHeads: ChatHead[] = [
   {
     id: '1',
-    name: 'Lulu Collins',
-    avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg',
-    lastMessage: 'Hi there, I have a question about...',
-    unread: 2,
-    timestamp: new Date(Date.now() - 1000000),
-    online: true,
+    name: 'Luis - Github',
+    lastMessage: 'I bought a product from your store in November as a Christmas gift for a member of my family. However, it turns out they have something very similar already. I was hoping you\'d be able to refund me, as it is un-opened.',
+    timestamp: new Date(Date.now() - 45 * 60000),
+    openCount: 5,
+    sortLabel: 'Waiting longest',
+    unreadMinutes: 45,
+    avatarBg: 'bg-blue-100 text-blue-700',
     messages: [
       {
         id: '1-1',
-        text: 'Hi there, I have a question about your return policy.',
+        text: 'I bought a product from your store in November as a Christmas gift for a member of my family. However, it turns out they have something very similar already. I was hoping you\'d be able to refund me, as it is un-opened.',
         sender: 'user',
-        timestamp: new Date(Date.now() - 1000000)
+        timestamp: new Date(Date.now() - 45 * 60000)
       },
       {
         id: '1-2',
-        text: 'Of course! I\'d be happy to help you with information about our return policy.',
+        text: 'Let me just look into this for you, Luis.',
         sender: 'bot',
-        timestamp: new Date(Date.now() - 990000)
+        timestamp: new Date(Date.now() - 44 * 60000)
       }
     ]
   },
   {
     id: '2',
     name: 'Ivan - Nike',
-    avatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg',
-    lastMessage: 'All done, I have a qu...',
-    unread: 1,
-    timestamp: new Date(Date.now() - 2000000),
-    messages: [
-      {
-        id: '2-1',
-        text: 'Hello, I need help tracking my order #NK12345',
-        sender: 'user',
-        timestamp: new Date(Date.now() - 2000000)
-      },
-      {
-        id: '2-2',
-        text: 'I\'ll help you track your order. Let me check that for you.',
-        sender: 'bot',
-        timestamp: new Date(Date.now() - 1990000)
-      }
-    ]
+    lastMessage: 'Hi there, I have a question...',
+    timestamp: new Date(Date.now() - 30 * 60000),
+    openCount: 5,
+    sortLabel: 'Waiting longest',
+    unreadMinutes: 30,
+    avatarBg: 'bg-green-100 text-green-700',
+    messages: []
   },
   {
     id: '3',
     name: 'Lead from New York',
-    avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
     lastMessage: 'Good morning, let me...',
-    timestamp: new Date(Date.now() - 3000000),
-    online: true,
-    messages: [
-      {
-        id: '3-1',
-        text: 'Good morning! I\'m interested in your premium package.',
-        sender: 'user',
-        timestamp: new Date(Date.now() - 3000000)
-      },
-      {
-        id: '3-2',
-        text: 'Great to hear that! Let me tell you about our premium features.',
-        sender: 'bot',
-        timestamp: new Date(Date.now() - 2990000)
-      }
-    ]
+    timestamp: new Date(Date.now() - 40 * 60000),
+    openCount: 5,
+    sortLabel: 'Waiting longest',
+    avatarBg: 'bg-purple-100 text-purple-700',
+    messages: []
+  },
+  {
+    id: '4',
+    name: 'Booking API problems',
+    lastMessage: 'Bug report',
+    timestamp: new Date(Date.now() - 44 * 60000),
+    openCount: 5,
+    sortLabel: 'Waiting longest',
+    avatarBg: 'bg-red-100 text-red-700',
+    messages: []
+  },
+  {
+    id: '5',
+    name: 'Miracle - Exemplary Bank',
+    lastMessage: 'Hey there, I\'m here to...',
+    timestamp: new Date(Date.now() - 44 * 60000),
+    openCount: 5,
+    sortLabel: 'Waiting longest',
+    avatarBg: 'bg-yellow-100 text-yellow-700',
+    messages: []
   }
 ];
 
 export const adminUser: AdminUser = {
-  name: 'Lula Easton',
+  name: 'Luis Easton',
   avatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg',
   role: 'Support Agent'
 };
-
-export const botResponses: string[] = [
-  "I understand your situation. Let me help you with that.",
-  "Could you please provide more details?",
-  "I'll check that information for you right away.",
-  "Thank you for your patience. I'm processing your request.",
-  "Is there anything else you need help with?"
-];
