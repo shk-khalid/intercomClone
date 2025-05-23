@@ -35,3 +35,19 @@ export interface CopilotSuggestion {
   type: 'question' | 'action';
   context?: string;
 }
+
+export interface QuickAction {
+  id: string;
+  text: string;
+  description?: string;
+  icon?: React.ComponentType<{ className?: string }>;
+}
+
+export interface ChatOption {
+  id: string;
+  label: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  action: () => void;
+  shortcut?: string;
+  divider?: boolean;
+}
