@@ -90,8 +90,14 @@ const MainChat: React.FC<MainChatProps> = ({ activeChat, toggleCopilot, toggleSi
   }, [messages]);
 
   useEffect(() => {
+    const handleCopilotSuggestion = (event: CustomEvent<string>) => {
+      setInput(event.detail);
+      inputRef.current?.focus();
+    };
+
+    window.addEventListener('copilotSuggestion', handleCopilotSuggestion as EventListener);
+    
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Prevent shortcuts when typing in input
       if (document.activeElement?.tagName === 'INPUT') {
         if (e.key === 'Enter') {
           e.preventDefault();
@@ -100,7 +106,6 @@ const MainChat: React.FC<MainChatProps> = ({ activeChat, toggleCopilot, toggleSi
         return;
       }
 
-      // Global shortcuts
       if (e.metaKey || e.ctrlKey) {
         switch (e.key) {
           case 'k':
@@ -153,6 +158,7 @@ const MainChat: React.FC<MainChatProps> = ({ activeChat, toggleCopilot, toggleSi
     document.addEventListener('mousedown', handleClickOutside);
     
     return () => {
+      window.removeEventListener('copilotSuggestion', handleCopilotSuggestion as EventListener);
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -185,11 +191,27 @@ const MainChat: React.FC<MainChatProps> = ({ activeChat, toggleCopilot, toggleSi
   };
 
   const handleFileUpload = (file: File) => {
+    if (!file) return;
+
+    // Check file size (max 10MB)
+    const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+    if (file.size > maxSize) {
+      alert('File size exceeds 10MB limit');
+      return;
+    }
+
+    // Check file type
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'application/pdf', 'text/plain'];
+    if (!allowedTypes.includes(file.type)) {
+      alert('File type not supported');
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = () => {
       const newMessage: Message = {
         id: Date.now().toString(),
-        text: 'Sent a file',
+        text: `Uploaded file: ${file.name}`,
         sender: 'user',
         timestamp: new Date(),
         file: {
@@ -250,6 +272,7 @@ const MainChat: React.FC<MainChatProps> = ({ activeChat, toggleCopilot, toggleSi
           <div className="bg-white p-6 rounded-lg shadow-lg text-center animate-pulse">
             <Download className="w-12 h-12 text-blue-500 mx-auto mb-2" />
             <p className="text-lg font-medium">Drop your file here</p>
+            <p className="text-sm text-gray-500">Max size: 10MB</p>
           </div>
         </div>
       )}
@@ -262,7 +285,18 @@ const MainChat: React.FC<MainChatProps> = ({ activeChat, toggleCopilot, toggleSi
           >
             <Menu className="w-5 h-5 text-gray-600" />
           </button>
-          <h2 className="text-base font-medium">{activeChat.name}</h2>
+          <div className="flex items-center">
+            <h2 className="text-base font-medium">{activeChat.name}</h2>
+            {activeChat.status && (
+              <span className={`ml-2 px-2 py-0.5 text-xs rounded-full ${
+                activeChat.status === 'open' ? 'bg-green-100 text-green-800' :
+                activeChat.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                'bg-gray-100 text-gray-800'
+              }`}>
+                {activeChat.status.charAt(0).toUpperCase() + activeChat.status.slice(1)}
+              </span>
+            )}
+          </div>
         </div>
         <div className="flex items-center space-x-2">
           <button
@@ -299,9 +333,16 @@ const MainChat: React.FC<MainChatProps> = ({ activeChat, toggleCopilot, toggleSi
                   <div className="flex items-center">
                     <Download className="w-4 h-4 text-gray-500 mr-2" />
                     <span className="text-sm text-gray-600 truncate flex-1">{message.file.name}</span>
-                    <button className="text-blue-500 text-xs hover:text-blue-700 transition-colors duration-150">
+                    <a 
+                      href={message.file.url}
+                      download={message.file.name}
+                      className="text-blue-500 text-xs hover:text-blue-700 transition-colors duration-150"
+                    >
                       Download
-                    </button>
+                    </a>
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {(message.file.size / 1024).toFixed(1)}KB
                   </div>
                 </div>
               )}
@@ -360,6 +401,7 @@ const MainChat: React.FC<MainChatProps> = ({ activeChat, toggleCopilot, toggleSi
             type="file"
             className="hidden"
             onChange={(e) => e.target.files?.[0] && handleFileUpload(e.target.files[0])}
+            accept="image/jpeg,image/png,image/gif,application/pdf,text/plain"
           />
           
           <button 
