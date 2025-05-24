@@ -4,9 +4,10 @@ import { CopilotMessage, SuggestedQuestion } from '../types';
 
 interface CopilotProps {
   onClose?: () => void;
+  onUseSuggestion?: (text: string) => void;
 }
 
-const Copilot: React.FC<CopilotProps> = ({ onClose }) => {
+const Copilot: React.FC<CopilotProps> = ({ onClose, onUseSuggestion }) => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<CopilotMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
@@ -71,6 +72,12 @@ const Copilot: React.FC<CopilotProps> = ({ onClose }) => {
     inputRef.current?.focus();
   };
 
+  const handleUseResponse = (text: string) => {
+    if (onUseSuggestion) {
+      onUseSuggestion(text);
+    }
+  };
+
   return (
     <div className="h-full flex flex-col bg-gradient-to-br from-gray-50 to-white">
       {/* Header */}
@@ -113,7 +120,7 @@ const Copilot: React.FC<CopilotProps> = ({ onClose }) => {
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
+                  className={`max-w-[80%] rounded-lg p-3 relative group ${
                     message.type === 'user'
                       ? 'bg-blue-500 text-white'
                       : 'bg-white border border-gray-200'
@@ -126,6 +133,15 @@ const Copilot: React.FC<CopilotProps> = ({ onClose }) => {
                       minute: '2-digit',
                     })}
                   </p>
+                  {message.type === 'assistant' && (
+                    <button
+                      onClick={() => handleUseResponse(message.text)}
+                      className="absolute -left-16 top-1/2 -translate-y-1/2 p-2 bg-white rounded-lg shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                      title="Use this response"
+                    >
+                      <MessageSquare className="w-4 h-4 text-blue-500" />
+                    </button>
+                  )}
                 </div>
               </div>
             ))}

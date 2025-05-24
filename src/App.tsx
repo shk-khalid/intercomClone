@@ -15,6 +15,14 @@ function App() {
   const toggleCopilot = () => setIsCopilotOpen(prev => !prev);
   const toggleSidebar = () => setIsSidebarOpen(prev => !prev);
 
+  const handleCopilotSuggestion = (text: string) => {
+    // Pass the suggestion to MainChat component
+    if (activeChat) {
+      const event = new CustomEvent('copilotSuggestion', { detail: text });
+      window.dispatchEvent(event);
+    }
+  };
+
   return (
     <div className="flex h-screen bg-white">
       {/* Mobile Sidebar Overlay */}
@@ -56,7 +64,10 @@ function App() {
           ${isCopilotOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}
           right-0
         `}>
-          <Copilot onClose={toggleCopilot} />
+          <Copilot 
+            onClose={toggleCopilot} 
+            onUseSuggestion={handleCopilotSuggestion}
+          />
         </div>
       </div>
     </div>

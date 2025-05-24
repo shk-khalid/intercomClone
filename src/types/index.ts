@@ -21,6 +21,8 @@ export interface ChatHead {
   unreadMinutes?: number;
   avatarBg: string;
   messages: Message[];
+  status?: 'open' | 'pending' | 'closed';
+  unread?: boolean;
 }
 
 export interface AdminUser {
@@ -29,11 +31,17 @@ export interface AdminUser {
   role: string;
 }
 
-export interface CopilotSuggestion {
+export interface CopilotMessage {
   id: string;
   text: string;
-  type: 'question' | 'action';
-  context?: string;
+  type: 'user' | 'assistant' | 'system';
+  timestamp: Date;
+}
+
+export interface SuggestedQuestion {
+  id: string;
+  text: string;
+  category: string;
 }
 
 export interface QuickAction {
