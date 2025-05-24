@@ -51,3 +51,5 @@ export interface ChatOption {
   shortcut?: string;
   divider?: boolean;
 }
+
+export type SortOption = 'newest' | 'oldest' | 'unread' | 'alphabetical';
